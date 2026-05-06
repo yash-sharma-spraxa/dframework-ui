@@ -1,4 +1,4 @@
-import { defineConfig, transformWithEsbuild } from 'vite';
+import { defineConfig, transformWithOxc } from 'vite';
 import react from '@vitejs/plugin-react';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import path from 'path';
@@ -9,12 +9,10 @@ export default defineConfig({
     plugins: [
         {
             name: 'treat-js-files-as-jsx',
+            enforce: 'pre',
             async transform(code, id) {
                 if (!id.match(/src\/.*\.js$/)) return null;
-                return transformWithEsbuild(code, id, {
-                    loader: 'jsx',
-                    jsx: 'automatic',
-                });
+                return transformWithOxc(code, id, { lang: 'jsx' });
             },
         },
         visualizer({
@@ -84,6 +82,8 @@ export default defineConfig({
         },
         outDir: 'dist',
         sourcemap: true,
+        minify: false,
+        target: 'es2020',
         // Copy assets from src/lib/assets to dist
         copyPublicDir: false,
     },

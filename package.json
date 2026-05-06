@@ -1,6 +1,6 @@
 {
   "name": "@durlabh/dframework-ui",
-  "version": "2.0.15",
+  "version": "2.0.17",
   "private": true,
   "type": "module",
   "main": "./index.js",
@@ -12,27 +12,27 @@
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.3.6",
-    "@mui/material": "^7.3.6",
-    "@mui/x-data-grid-premium": "^8.22.1",
-    "@mui/x-date-pickers": "^8.22.1",
-    "@mui/x-tree-view": "^8.22.0",
-    "dayjs": "^1.11.19",
+    "@mui/icons-material": "^7.3.10",
+    "@mui/material": "^7.3.10",
+    "@mui/x-data-grid-premium": "^8.28.3",
+    "@mui/x-date-pickers": "^8.28.4",
+    "@mui/x-tree-view": "^8.28.3",
+    "dayjs": "^1.11.20",
     "formik": "^2.4.9",
-    "i18next": "^25.7.3",
-    "i18next-browser-languagedetector": "^8.2.0",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-i18next": "^16.5.0",
-    "react-router-dom": "^7.11.0",
+    "i18next": "^26.0.8",
+    "i18next-browser-languagedetector": "^8.2.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-i18next": "^17.0.6",
+    "react-router-dom": "^7.14.2",
     "yup": "^1.7.1",
-    "@base-ui/react": "^1.0.0"
+    "@base-ui/react": "^1.4.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.1.2",
-    "rollup-plugin-visualizer": "^6.0.5",
-    "vite": "^7.3.0",
-    "vite-plugin-static-copy": "^3.1.4"
+    "@vitejs/plugin-react": "^6.0.1",
+    "rollup-plugin-visualizer": "^6.0.11",
+    "vite": "^8.0.10",
+    "vite-plugin-static-copy": "^3.4.0"
   },
   "scripts": {
     "dev": "vite",

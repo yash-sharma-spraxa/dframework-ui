@@ -133,6 +133,8 @@ const booleanIconRenderer = (params) => {
     }
 };
 
+const gridGroupByColumnName = ['__row_group_by_columns_group__', '__detail_panel_toggle__'];
+
 const DeleteContentText = styled('span')({
     width: '100%',
     whiteSpace: 'nowrap',
@@ -374,6 +376,10 @@ const GridBase = memo(({
             "type": "singleSelect",
             "valueOptions": "lookup"
         },
+        "lookup": {
+            "type": "singleSelect",
+            "valueOptions": "lookup"
+        },
         "selection": {
             renderCell: (params) => <CustomCheckBox params={params} handleSelectRow={handleSelectRow} idProperty={idProperty} />
         }
@@ -515,6 +521,17 @@ const GridBase = memo(({
                 ),
         [actionConfig, createAction]
     );
+    // Derive a stable string from the loaded lookup names. Recomputes whenever the
+    // set of lookup keys changes (e.g. after the first data fetch or when new lookups
+    // are introduced), causing the gridColumns useMemo below to produce new column
+    // object references. MUI DataGrid's GridFilterInputSingleSelect then sees a new
+    // resolvedColumn and re-evaluates its memoized currentValueOptions with the fresh
+    // lookup data, ensuring header-filter selections are applied correctly.
+    const lookupKeys = useMemo(() => {
+        const lookups = data?.lookups || {};
+        return Object.keys(lookups).sort().join(',');
+    }, [data?.lookups]);
+
     const { gridColumns, pinnedColumns, lookupMap } = useMemo(() => {
         let baseColumnList = columns || model.gridColumns || model.columns;
         if (dynamicColumns) {
@@ -599,7 +616,7 @@ const GridBase = memo(({
             pinnedColumns.right.push('actions');
         }
         return { gridColumns: finalColumns, pinnedColumns, lookupMap };
-    }, [columns, model, parent, permissions, forAssignment, dynamicColumns, translate, stateData?.dateTime]);
+    }, [columns, model, parent, permissions, forAssignment, dynamicColumns, translate, stateData?.dateTime, lookupKeys]);
 
     // Initialize toolbar filters with default values
     const hasInitializedRef = useRef(false);
@@ -1120,6 +1137,12 @@ const GridBase = memo(({
     }, [gridColumns, constants.Number, emptyIsAnyOfOperatorFilters, isElasticScreen, setFilterModel]);
 
     const updateSort = useCallback((e) => {
+        if (e[0]) {
+            if (gridGroupByColumnName.includes(e[0].field)) {
+                snackbar.showMessage(tTranslate('Group By is applied on the same column, please remove it in order to apply sorting.', tOpts));
+                return;
+            }
+        }
         const sort = e.map((ele) => {
             const field = gridColumns.filter(element => element.field === ele.field)[0] || {};
             const isKeywordField = isElasticScreen && field.isKeywordField;
